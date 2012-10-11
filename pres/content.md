@@ -35,14 +35,6 @@ Rich Hickey, at [Strangeloop 2012](http://www.infoq.com/presentations/Simple-Mad
 
 ---
 
-# Out of the Tar Pit
-
-![TarPit](resources/tarpit.png)
-
-http://shaffner.us/cs/papers/tarpit.pdf
-
----
-
 # Deconstructing the Database
 
 ---
@@ -85,7 +77,7 @@ http://shaffner.us/cs/papers/tarpit.pdf
 
 # Deconstructing the Coordination Model
 
-* Traditional: coordination for both reads and writes, poll for novelty
+* Traditional: heavy coordination for reads and writes, need to poll for novelty
 
 ![Perception](resources/eyeman.gif)
 
@@ -225,7 +217,7 @@ http://snltranscripts.jt.org/75/75ishimmer.phtml
 
 * Key-Value Stores have no leverage
 * Datomic uses KV-stores for storage
-* Adds leverage with query and transactions
+* Adds leverage with query and transactions and consistency
 
 ![Riak](resources/riak.png)
 
@@ -385,7 +377,7 @@ Implicit Join
 	!java
 	import static datomic.Peer.q;
 	
-	q("[:find ?customer :where [?customer :id] [?customer :orders]]", 
+	q("[:find ?customer :in $ :where [?customer :id] [?customer :orders]]", 
 	    db);
 	
 Find using $database and ?email:
@@ -446,9 +438,11 @@ Or: find me the customer/product combinations where the shipping cost dominates 
 
 ---
 
-# Whiteboard
+# Soccer Players
 
 ![Whiteboard](resources/whiteboard.png)
+
+https://github.com/mamersfo/datomic-intro-java
 
 ---
 

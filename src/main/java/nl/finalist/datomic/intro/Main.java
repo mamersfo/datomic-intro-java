@@ -74,4 +74,15 @@ public class Main
             conn.transact( txData );
         }
     }    
+    
+    public static void main( String[] input )
+    {
+        Collection<List<Object>> result = 
+            Peer.q( "[:find ?a ?v :in $ :where [$ ?a ?v]]", System.getProperties() );
+        
+        for ( List<Object> list : result )
+        {
+            System.out.println( list );
+        }
+    }
 }
