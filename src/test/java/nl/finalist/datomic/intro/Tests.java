@@ -36,7 +36,7 @@ public class Tests
 
         LOGGER.info( "Find all entities" );
         // Task: define the query
-        String query = "";
+        String query = "[:find ?p :in $ :where [?p :name]]";
         Collection<List<Object>> results = Peer.q( query, conn.db() );
         assertEquals( 153, results.size() );
         List<Entity> entities = Helper.entities( results, conn.db() );
@@ -46,7 +46,7 @@ public class Tests
         
         LOGGER.info( "Find all persons" );
         // Task: define the query
-        query = "";
+        query = "[:find ?p :in $ :where [?p :person/height _]]";
         results = Peer.q( query, conn.db() );
         assertEquals( 85, results.size() );
         Helper.printEntities( Helper.entities( results, conn.db() ) );
