@@ -87,7 +87,7 @@ public class Tests
         LOGGER.info( "List name, team and salary, ordered by salary (desc) for 2011" );
         query = "";
         // Task: change the argument
-        results = Peer.q( query, conn.db().asOf( year2011 ) );
+        results = Peer.q( query, conn.db() );
         List<List<Object>> values = Helper.sort( Helper.list( results ), 1, "DESC" ); 
         Helper.printValues( values );
         assertEquals( "Cristiano Ronaldo", values.get( 0 ).get( 0 ) );
