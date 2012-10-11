@@ -1,0 +1,2031 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>NoSQL Techsessie <strong>Datomic</strong></title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="theme/css/print.css">
+    <link rel="stylesheet" media="screen, projection" href="theme/css/screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="theme/js/slides.js"></script>
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>NoSQL Techsessie <strong>Datomic</strong></h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Topics</h1></header>
+            
+            
+            <section><ul>
+<li>Introduction</li>
+<li>Deconstructing the Database</li>
+<li>Datomic Architecture</li>
+<li>NoSQL, NewSQL and Datomic</li>
+<li>Datalog Crash Course</li>
+<li>Lab Exercises</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            
+            <section><p><img alt="Datamic" src="resources/logo.png" /></p>
+<p><img alt="Datamic" src="resources/pebbles.jpg" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Rich Hickey</h1></header>
+            
+            
+            <section><p><img alt="TimeTravel" src="resources/timetravel.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_notes">
+          <div class="inner">
+            
+            <header><h1>Complexity</h1></header>
+            
+            
+            <section><p><img alt="Simple-Made-Easy" src="resources/simple-made-easy.png" /></p>
+<p>Rich Hickey, at <a href="http://www.infoq.com/presentations/Simple-Made-Easy">Strangeloop 2012</a></p>
+<p class="notes">Complected, braided together</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Out of the Tar Pit</h1></header>
+            
+            
+            <section><p><img alt="TarPit" src="resources/tarpit.png" /></p>
+<p>http://shaffner.us/cs/papers/tarpit.pdf</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Deconstructing the Database</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Deconstruction</h1></header>
+            
+            
+            <section><ul>
+<li>Information Model</li>
+<li>State Model</li>
+<li>Coordination Model</li>
+<li>Distribution Model</li>
+</ul>
+<p><img alt="Derrida" src="resources/derrida.gif" /></p>
+<p><center>Jacques Derrida (1930-2004)</center></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Deconstructing the Information Model</h1></header>
+            
+            
+            <section><ul>
+<li>Traditional: relations vs. objects, impedance mismatch</li>
+</ul>
+<p><img alt="EAVT" src="resources/eavt.png" /></p>
+<ul>
+<li>Datomic: facts, EAVT, Datoms</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_notes">
+          <div class="inner">
+            
+            <header><h1>Deconstructing the State Model</h1></header>
+            
+            
+            <section><ul>
+<li>Traditional: update in place, contention, "the basis problem"</li>
+</ul>
+<p><img alt="Treerings" src="resources/tree_rings.gif" /></p>
+<ul>
+<li>Datomic: Accretion of immutable facts, the database as an expanding value</li>
+</ul>
+<p class="notes">quite reasonable in a time where storage is expensive, but that is not the case anymore. Over there, a place.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Deconstructing the Coordination Model</h1></header>
+            
+            
+            <section><ul>
+<li>Traditional: coordination for both reads and writes, poll for novelty</li>
+</ul>
+<p><img alt="Perception" src="resources/eyeman.gif" /></p>
+<ul>
+<li>Datomic: splits "perception" (reads) and "process" (writes), reactive - not polling</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Deconstructing the Distribution Model</h1></header>
+            
+            
+            <section><ul>
+<li>Traditional: Client-server, partitions between service providers and service requesters</li>
+</ul>
+<p><img alt="Peers" src="resources/peers.png" /></p>
+<ul>
+<li>Datomic: Peers and Storage, and Transactors too, empower applications by coordinating change and storage</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_notes">
+          <div class="inner">
+            
+            <header><h1>Deconstructing the Database</h1></header>
+            
+            
+            <section><p><img alt="Deconstructed" src="resources/deconstructed.png" /></p>
+<p>Source: Rich Hickey, at <a href="http://www.infoq.com/presentations/Datomic">GOTO 2012</a></p>
+<p class="notes">Basis problem with client-server, "over there"</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Datomic Architecture</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Datomic Architecture</h1></header>
+            
+            
+            <section><p><img alt="Architecture" src="resources/architecture.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Storage Services</h1></header>
+            
+            
+            <section><p><img alt="AmazonDB" src="resources/aws.png" /></p>
+<p><img alt="Infinispan" src="resources/infinispan.png" /></p>
+<p><img alt="PostgreSQL" src="resources/postgresql.jpg" /> </p>
+<p><img alt="H2" src="resources/h2.png" /></p>
+<p><img alt="Riak" src="resources/riak.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Indexing</h1></header>
+            
+            
+            <section><ul>
+<li>EAVT ~ Relational</li>
+<li>AEVT ~ Column</li>
+<li>VEAT ~ Reverse Indexing</li>
+<li>AVET ~ Range Queries</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Indexing</h1></header>
+            
+            
+            <section><p><img alt="Index Storage" src="resources/index-storage.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>NoSQL, NewSQL and Datomic</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Datomic vs. No/New/SQL</h1></header>
+            
+            
+            <section><p><img alt="Icons" src="resources/icons.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Datomic vs. No/New/SQL</h1></header>
+            
+            
+            <section><p><img alt="Icons" src="resources/icons.png" /></p>
+<ul>
+<li>Documents</li>
+<li>Graphs</li>
+<li>Columns</li>
+<li>Key-Value Pairs</li>
+<li>Rectangles</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              21/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Shimmer (SNL)</h1></header>
+            
+            
+            <section><p><img alt="Shimmer" src="resources/shimmer.png" /></p>
+<p>http://snltranscripts.jt.org/75/75ishimmer.phtml</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              22/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Datomic vs. Document Stores</h1></header>
+            
+            
+            <section><p><img alt="Doc" src="resources/icon-doc.png" /></p>
+<ul>
+<li>Datoms are not JSON Documents</li>
+<li>Documents are comparable to entities with attributes and values</li>
+<li>Not the unit of storage</li>
+</ul>
+<p><img alt="MongoDB" src="resources/mongo.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              23/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Datomic vs. Graph Databases</h1></header>
+            
+            
+            <section><p><img alt="Graph" src="resources/icon-graph.png" /></p>
+<ul>
+<li>Neo4j has reified edges</li>
+<li>Datomic has reified transactions</li>
+<li>Example: <a href="http://architects.dzone.com/articles/back-future-datomic">Back To The Future with Datomic</a></li>
+<li><a href="https://github.com/datablend/blueprints/tree/master/blueprints-datomic-graph">blueprints-datomic-graph</a> implements <a href="https://github.com/tinkerpop/blueprints/wiki">Blueprints API</a></li>
+</ul>
+<p><img alt="Neo4j" src="resources/neo4j.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              24/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Datomic vs. Column-Family Stores</h1></header>
+            
+            
+            <section><p><img alt="Column" src="resources/icon-column.png" /></p>
+<ul>
+<li>Datomic AEVT indexing ~ a column store</li>
+<li>Sparse, irregular data</li>
+<li>Single and multi-valued attributes</li>
+</ul>
+<p><img alt="HBase" src="resources/hbase.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              25/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Datomic vs. Key-Value Stores</h1></header>
+            
+            
+            <section><p><img alt="KV" src="resources/icon-kv.png" /></p>
+<ul>
+<li>Key-Value Stores have no leverage</li>
+<li>Datomic uses KV-stores for storage</li>
+<li>Adds leverage with query and transactions</li>
+</ul>
+<p><img alt="Riak" src="resources/riak.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              26/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_notes">
+          <div class="inner">
+            
+            <header><h1>Datoms vs. Rectangles</h1></header>
+            
+            
+            <section><p><img alt="Rect" src="resources/icon-rect.png" /></p>
+<ul>
+<li>Datomic: No rectangles = no structural rigidity</li>
+<li>NewSQL: transactional writes serialized using a single writer</li>
+<li>VoltDB: single-threaded model, no overhead of write contention</li>
+<li>VoltDB: focus on TP vs. analytics</li>
+</ul>
+<p><img alt="VoltDB" src="resources/voltdb.jpg" /></p>
+<p class="notes">VoltDB write throughput = 40-50x faster than traditional databases</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              27/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Agility</h1></header>
+            
+            
+            <section><p><img alt="Agility" src="resources/agility.png" /></p>
+<p>Source: Stuart Halloway, from "Day of Datomic" training</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              28/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Crash Course Datalog</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              29/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Datalog in 6 minutes</h1></header>
+            
+            
+            <section><p><img alt="Stuart Halloway" src="resources/stuhalloway.png" /></p>
+<p>Source: Stuart Halloway, at <a href="http://vimeo.com/45136215">EuroClojure</a> @ 24:30</p>
+<p>See also <a href="http://www.datomic.com/videos.html#query">this</a> tutorial</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              30/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code has_notes">
+          <div class="inner">
+            
+            <header><h1>Query Anatomy</h1></header>
+            
+            
+            <section><p>Clojure</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">(</span><span class="nf">q</span> <span class="p">(</span><span class="o">&#39;</span><span class="p">[</span><span class="ss">:find</span> <span class="nv">...</span>
+<span class="lineno">2</span>       <span class="ss">:in</span> <span class="nv">...</span>
+<span class="lineno">3</span>       <span class="ss">:where</span> <span class="nv">...</span><span class="p">]</span>
+<span class="lineno">4</span>       <span class="nv">input1</span>
+<span class="lineno">5</span>       <span class="nv">...</span>
+<span class="lineno">6</span>       <span class="nv">inputN</span><span class="p">))</span>
+</pre></div>
+
+<p>Java</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="n">q</span><span class="o">(</span> <span class="s">&quot;[:find ...</span>
+<span class="lineno">2</span> <span class="s">     :in ...</span>
+<span class="lineno">3</span> <span class="s">     :where ...]&quot;</span><span class="o">,</span>
+<span class="lineno">4</span>      <span class="n">input1</span><span class="o">,</span>
+<span class="lineno">5</span>      <span class="o">...,</span>
+<span class="lineno">6</span>      <span class="n">inputN</span><span class="o">);</span>
+</pre></div>
+
+<p class="notes">:where - constraints, :in - inputs, :find - variables to return</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              31/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Variables and Constants</h1></header>
+            
+            
+            <section><p>Variables</p>
+<ul>
+<li>?customer</li>
+<li>?product</li>
+<li>?orderId</li>
+<li>?email</li>
+</ul>
+<p>Constants</p>
+<ul>
+<li>42</li>
+<li>:email</li>
+<li>"john"</li>
+<li>:order/id</li>
+<li>#instant "2012-02-29"</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              32/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Data Pattern: E-A-V</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> -------------------------------------------
+<span class="lineno">2</span> | entity | attribute | value              |
+<span class="lineno">3</span> -------------------------------------------
+<span class="lineno">4</span> | 42     | :email     | jdoe@example.com  |
+<span class="lineno">5</span> | 43     | :email     | jane@example.com  |
+<span class="lineno">6</span> | 42     | :orders    | 107               |
+<span class="lineno">7</span> | 42     | :orders    | 141               |
+<span class="lineno">8</span> -------------------------------------------
+</pre></div>
+
+<p>Constrain the results returned, binds variables</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[</span><span class="nv">?customer</span> <span class="ss">:email</span> <span class="nv">?email</span><span class="p">]</span>
+</pre></div>
+
+<p>-&gt; jdoe@example.com, jane@example.com</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[</span><span class="mi">42</span> <span class="ss">:email</span> <span class="nv">?email</span><span class="p">]</span>
+</pre></div>
+
+<p>-&gt; jdoe@example.com</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              33/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Data Pattern: E-A-V</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> -------------------------------------------
+<span class="lineno">2</span> | entity | attribute | value              |
+<span class="lineno">3</span> -------------------------------------------
+<span class="lineno">4</span> | 42     | :email     | jdoe@example.com  |
+<span class="lineno">5</span> | 43     | :email     | jane@example.com  |
+<span class="lineno">6</span> | 42     | :orders    | 107               |
+<span class="lineno">7</span> | 42     | :orders    | 141               |
+<span class="lineno">8</span> -------------------------------------------
+</pre></div>
+
+<p>What attributes does customer 42 have?</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[</span><span class="mi">42</span> <span class="nv">?attribute</span><span class="p">]</span>
+</pre></div>
+
+<p>-&gt; :email, :orders</p>
+<p>What attributes and values does customer 42 have?</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[</span><span class="mi">42</span> <span class="nv">?attribute</span> <span class="nv">?value</span><span class="p">]</span>
+</pre></div>
+
+<p>-&gt; :email - jdoe@example.com, :orders - 107, 141</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              34/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Where Clause</h1></header>
+            
+            
+            <section><p>Where to put the data pattern?</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[</span><span class="ss">:find</span> <span class="nv">?customer</span>
+<span class="lineno">2</span>  <span class="ss">:where</span> <span class="p">[</span><span class="nv">?customer</span> <span class="ss">:email</span><span class="p">]]</span>
+</pre></div>
+
+<p>Implicit Join</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[</span><span class="ss">:find</span> <span class="nv">?customer</span>
+<span class="lineno">2</span>  <span class="ss">:where</span> <span class="p">[</span><span class="nv">?customer</span> <span class="ss">:email</span><span class="p">]</span>
+<span class="lineno">3</span>         <span class="p">[</span><span class="nv">?customer</span> <span class="ss">:orders</span><span class="p">]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              35/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Input(s)</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="kn">import</span> <span class="nn">static</span> <span class="n">datomic</span><span class="o">.</span><span class="na">Peer</span><span class="o">.</span><span class="na">q</span><span class="o">;</span>
+<span class="lineno">2</span> 
+<span class="lineno">3</span> <span class="n">q</span><span class="o">(</span><span class="s">&quot;[:find ?customer :where [?customer :id] [?customer :orders]]&quot;</span><span class="o">,</span> 
+<span class="lineno">4</span>     <span class="n">db</span><span class="o">);</span>
+</pre></div>
+
+<p>Find using $database and ?email:</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="n">q</span><span class="o">(</span><span class="s">&quot;[:find ?customer&quot;</span> <span class="o">+</span>
+<span class="lineno">2</span>    <span class="s">&quot;:in $ ?email &quot;</span> <span class="o">+</span>
+<span class="lineno">3</span>    <span class="s">&quot;:where [?customer :email ?email]]&quot;</span><span class="o">,</span>
+<span class="lineno">4</span>     <span class="n">db</span><span class="o">,</span> <span class="s">&quot;jdoe@example.com&quot;</span><span class="o">);</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              36/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>DB and non-DB resources</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="n">q</span><span class="o">(</span><span class="s">&quot;[:find ?a ?v :in $ :where [$ ?a ?v]]&quot;</span><span class="o">,</span> 
+<span class="lineno">2</span>   <span class="n">System</span><span class="o">.</span><span class="na">getProperties</span><span class="o">());</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              37/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Predicates</h1></header>
+            
+            
+            <section><p>Functional constraints that can appear in a :where clause</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[(</span><span class="nb">&lt; </span><span class="mf">50.0</span> <span class="nv">?price</span><span class="p">)]</span>
+</pre></div>
+
+<p>Find the expensive items</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[</span><span class="ss">:find</span> <span class="nv">?item</span>
+<span class="lineno">2</span>  <span class="ss">:where</span> <span class="p">[</span><span class="nv">?item</span> <span class="ss">:item/price</span> <span class="nv">?price</span><span class="p">]</span>
+<span class="lineno">3</span>         <span class="p">[(</span><span class="nb">&lt; </span><span class="mf">50.0</span> <span class="nv">?price</span><span class="p">)]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              38/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Functions</h1></header>
+            
+            
+            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="p">[(</span><span class="nf">shipping</span> <span class="nv">?zip</span> <span class="nv">?weight</span><span class="p">)</span> <span class="nv">?cost</span><span class="p">]</span>
+</pre></div>
+
+<p>Call functions by binding inputs:</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[</span><span class="ss">:find</span> <span class="nv">?customer</span> <span class="nv">?product</span>
+<span class="lineno">2</span>  <span class="ss">:where</span> <span class="p">[</span><span class="nv">?customer</span> <span class="ss">:shipAddress</span> <span class="nv">?address</span><span class="p">]</span>
+<span class="lineno">3</span>         <span class="p">[</span><span class="nv">?address</span> <span class="ss">:zip</span> <span class="nv">?zip</span><span class="p">]</span>
+<span class="lineno">4</span>         <span class="p">[</span><span class="nv">?product</span> <span class="ss">:product/weight</span> <span class="nv">?weight</span><span class="p">]</span>
+<span class="lineno">5</span>         <span class="p">[</span><span class="nv">?product</span> <span class="ss">:product/price</span> <span class="nv">?price</span><span class="p">]</span>
+<span class="lineno">6</span>         <span class="p">[(</span><span class="nf">Shipping/estimate</span> <span class="nv">?zip</span> <span class="nv">?weight</span><span class="p">)</span> <span class="nv">?shipCost</span><span class="p">]</span>
+<span class="lineno">7</span>         <span class="p">[(</span><span class="nb">&lt;= </span><span class="nv">?price</span> <span class="nv">?shipCost</span><span class="p">)]]</span>
+</pre></div>
+
+<p>Or: find me the customer/product combinations where the shipping cost dominates the product cost.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              39/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Lab Exercises</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              40/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Whiteboard</h1></header>
+            
+            
+            <section><p><img alt="Whiteboard" src="resources/whiteboard.png" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              41/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Exercise 1</h1></header>
+            
+            
+            <section><p>Find all entities</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[</span><span class="ss">:find</span> <span class="nv">?p</span> <span class="ss">:in</span> <span class="nv">$</span> <span class="ss">:where</span> <span class="p">[</span><span class="nv">?p</span> <span class="ss">:name</span><span class="p">]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              42/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Exercise 2</h1></header>
+            
+            
+            <section><p>Find all persons</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[</span><span class="ss">:find</span> <span class="nv">?p</span> <span class="ss">:in</span> <span class="nv">$</span> <span class="ss">:where</span> <span class="p">[</span><span class="nv">?p</span> <span class="ss">:person/height</span> <span class="nv">_</span><span class="p">]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              43/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Exercise 3</h1></header>
+            
+            
+            <section><p>Find team and salary for Zlatan Ibrahimovic</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[</span><span class="ss">:find</span> <span class="nv">?instant</span> <span class="ss">:in</span> <span class="nv">$</span> <span class="nv">?n</span> <span class="ss">:where</span> 
+<span class="lineno">2</span>     <span class="p">[</span><span class="nv">?p</span> <span class="ss">:name</span> <span class="nv">?n</span><span class="p">]</span> <span class="p">[</span><span class="nv">?tx</span> <span class="ss">:db/txInstant</span> <span class="nv">?instant</span><span class="p">]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              44/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Exercise 4</h1></header>
+            
+            
+            <section><p>List name, team and salary, ordered by salary (desc) for 2011</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="n">Peer</span><span class="o">.</span><span class="na">q</span><span class="o">(</span> <span class="n">query</span><span class="o">,</span> <span class="n">conn</span><span class="o">.</span><span class="na">db</span><span class="o">().</span><span class="na">asOf</span><span class="o">(</span> <span class="n">year2011</span> <span class="o">)</span> <span class="o">);</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              45/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Exercise 5</h1></header>
+            
+            
+            <section><p>Find Twitter screenName and followersCount where followersCount &gt; a million</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[</span><span class="ss">:find</span> <span class="nv">?s</span> <span class="nv">?c</span> <span class="ss">:in</span> <span class="nv">$</span> <span class="ss">:where</span> 
+<span class="lineno">2</span>     <span class="p">[</span><span class="nv">?t</span> <span class="ss">:twitter/screenName</span> <span class="nv">?s</span><span class="p">]</span> 
+<span class="lineno">3</span>     <span class="p">[</span><span class="nv">?t</span> <span class="ss">:twitter/followersCount</span> <span class="nv">?c</span><span class="p">]</span> 
+<span class="lineno">4</span>     <span class="p">[(</span><span class="nb">&gt; </span><span class="nv">?c</span> <span class="mi">1000000</span><span class="p">)]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              46/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: content.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h1>Exercise 6</h1></header>
+            
+            
+            <section><p>Find names of players who are following Robin van Persie on Twitter</p>
+<div class="highlight"><pre><span class="lineno">1</span> <span class="p">[</span><span class="ss">:find</span> <span class="nv">?name</span> <span class="ss">:in</span> <span class="nv">$</span> <span class="nv">?a1</span> <span class="ss">:where</span>
+<span class="lineno">2</span>     <span class="p">[</span><span class="nv">?p1</span> <span class="ss">:name</span> <span class="nv">?a1</span><span class="p">]</span>
+<span class="lineno">3</span>     <span class="p">[</span><span class="nv">?p1</span> <span class="ss">:player/twitter.screenName</span> <span class="nv">?s1</span><span class="p">]</span>
+<span class="lineno">4</span>     <span class="p">[</span><span class="nv">?tw</span> <span class="ss">:twitter/screenName</span> <span class="nv">?s1</span><span class="p">]</span>
+<span class="lineno">5</span>     <span class="p">[</span><span class="nv">?tw</span> <span class="ss">:twitter/followers</span> <span class="nv">?fs</span><span class="p">]</span>
+<span class="lineno">6</span>     <span class="p">[</span><span class="nv">?fs</span> <span class="ss">:twitter/screenName</span> <span class="nv">?s2</span><span class="p">]</span>
+<span class="lineno">7</span>     <span class="p">[</span><span class="nv">?p2</span> <span class="ss">:player/twitter.screenName</span> <span class="nv">?s2</span><span class="p">]</span>
+<span class="lineno">8</span>     <span class="p">[</span><span class="nv">?p2</span> <span class="ss">:name</span> <span class="nv">?name</span><span class="p">]]</span>
+</pre></div>
+</section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="content.md">content.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              47/47
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">NoSQL Techsessie <strong>Datomic</strong></a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">Topics</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">-</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">Rich Hickey</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">Complexity</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">Out of the Tar Pit</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">Deconstructing the Database</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">Deconstruction</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">Deconstructing the Information Model</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">Deconstructing the State Model</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">Deconstructing the Coordination Model</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">Deconstructing the Distribution Model</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">Deconstructing the Database</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-14">
+        <th><a href="#slide14">Datomic Architecture</a></th>
+        <td><a href="#slide14">14</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-15">
+        <th><a href="#slide15">Datomic Architecture</a></th>
+        <td><a href="#slide15">15</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-16">
+        <th><a href="#slide16">Storage Services</a></th>
+        <td><a href="#slide16">16</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-17">
+        <th><a href="#slide17">Indexing</a></th>
+        <td><a href="#slide17">17</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-18">
+        <th><a href="#slide18">Indexing</a></th>
+        <td><a href="#slide18">18</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-19">
+        <th><a href="#slide19">NoSQL, NewSQL and Datomic</a></th>
+        <td><a href="#slide19">19</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-20">
+        <th><a href="#slide20">Datomic vs. No/New/SQL</a></th>
+        <td><a href="#slide20">20</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-21">
+        <th><a href="#slide21">Datomic vs. No/New/SQL</a></th>
+        <td><a href="#slide21">21</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-22">
+        <th><a href="#slide22">Shimmer (SNL)</a></th>
+        <td><a href="#slide22">22</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-23">
+        <th><a href="#slide23">Datomic vs. Document Stores</a></th>
+        <td><a href="#slide23">23</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-24">
+        <th><a href="#slide24">Datomic vs. Graph Databases</a></th>
+        <td><a href="#slide24">24</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-25">
+        <th><a href="#slide25">Datomic vs. Column-Family Stores</a></th>
+        <td><a href="#slide25">25</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-26">
+        <th><a href="#slide26">Datomic vs. Key-Value Stores</a></th>
+        <td><a href="#slide26">26</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-27">
+        <th><a href="#slide27">Datoms vs. Rectangles</a></th>
+        <td><a href="#slide27">27</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-28">
+        <th><a href="#slide28">Agility</a></th>
+        <td><a href="#slide28">28</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-29">
+        <th><a href="#slide29">Crash Course Datalog</a></th>
+        <td><a href="#slide29">29</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-30">
+        <th><a href="#slide30">Datalog in 6 minutes</a></th>
+        <td><a href="#slide30">30</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-31">
+        <th><a href="#slide31">Query Anatomy</a></th>
+        <td><a href="#slide31">31</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-32">
+        <th><a href="#slide32">Variables and Constants</a></th>
+        <td><a href="#slide32">32</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-33">
+        <th><a href="#slide33">Data Pattern: E-A-V</a></th>
+        <td><a href="#slide33">33</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-34">
+        <th><a href="#slide34">Data Pattern: E-A-V</a></th>
+        <td><a href="#slide34">34</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-35">
+        <th><a href="#slide35">Where Clause</a></th>
+        <td><a href="#slide35">35</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-36">
+        <th><a href="#slide36">Input(s)</a></th>
+        <td><a href="#slide36">36</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-37">
+        <th><a href="#slide37">DB and non-DB resources</a></th>
+        <td><a href="#slide37">37</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-38">
+        <th><a href="#slide38">Predicates</a></th>
+        <td><a href="#slide38">38</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-39">
+        <th><a href="#slide39">Functions</a></th>
+        <td><a href="#slide39">39</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-40">
+        <th><a href="#slide40">Lab Exercises</a></th>
+        <td><a href="#slide40">40</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-41">
+        <th><a href="#slide41">Whiteboard</a></th>
+        <td><a href="#slide41">41</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-42">
+        <th><a href="#slide42">Exercise 1</a></th>
+        <td><a href="#slide42">42</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-43">
+        <th><a href="#slide43">Exercise 2</a></th>
+        <td><a href="#slide43">43</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-44">
+        <th><a href="#slide44">Exercise 3</a></th>
+        <td><a href="#slide44">44</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-45">
+        <th><a href="#slide45">Exercise 4</a></th>
+        <td><a href="#slide45">45</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-46">
+        <th><a href="#slide46">Exercise 5</a></th>
+        <td><a href="#slide46">46</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-47">
+        <th><a href="#slide47">Exercise 6</a></th>
+        <td><a href="#slide47">47</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>
