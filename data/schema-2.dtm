@@ -2,18 +2,18 @@
     ;; Player: Team
     
     {:db/id #db/id [:db.part/db]
-	   :db/ident :player/team
-	   :db/valueType :db.type/ref
-	   :db/cardinality :db.cardinality/one
+	 :db/ident :player/team
+	 :db/valueType :db.type/ref
+	 :db/cardinality :db.cardinality/one
      :db/doc "Team of a player"
-	   :db.install/_attribute :db.part/db}    
+	 :db.install/_attribute :db.part/db}    
 
     ;; Player: Salary
     
     {:db/id #db/id [:db.part/db]
-	   :db/ident :player/salary
-	   :db/valueType :db.type/double
-	   :db/cardinality :db.cardinality/one
+	 :db/ident :player/salary
+	 :db/valueType :db.type/double
+	 :db/cardinality :db.cardinality/one
      :db/doc "Yearly salary of a player"
-	   :db.install/_attribute :db.part/db}    
+	 :db.install/_attribute :db.part/db}    
 ]
