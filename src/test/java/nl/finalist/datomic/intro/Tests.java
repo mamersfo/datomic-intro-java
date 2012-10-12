@@ -21,7 +21,7 @@ public class Tests
     private final String uri = "datomic:mem://players";
         
     @Test
-    public void findAllEntitiesAndPersons()
+    public void findAllEntities()
     {
         LOGGER.info( "Exercise 1: find all entities" );
 
@@ -38,12 +38,28 @@ public class Tests
         Helper.printEntities( Helper.entities( results, conn.db() ) );
         assertEquals( 153, results.size() );
 
+        Peer.deleteDatabase( uri );
+    }
+    
+    @Test
+    public void findAllPersons()
+    {
+        LOGGER.info( "Exercise 1: find all entities" );
+
+        LOGGER.info( "Creating and connecting to database at {}", uri );
+        Connection conn = Main.createAndConnect( uri );
+        LOGGER.info( "Adding schema and data with attrs: name, country, person/born, person/height, player/position" );
+        Main.parseDatomicFileAndRunTransaction( "data/schema-1.dtm", conn );
+        Main.parseDatomicFileAndRunTransaction( "data/data-1.dtm", conn );
+        
         // Task: define query2
         String query2 = Solutions.query2;
-        assertTrue( query2 != null && query1.length() > 0 );
-        results = Peer.q( query2, conn.db() );
+        assertTrue( query2 != null && query2.length() > 0 );
+        Collection<List<Object>> results = Peer.q( query2, conn.db() );
         Helper.printEntities( Helper.entities( results, conn.db() ) );
         assertEquals( 85, results.size() );
+        
+        Peer.deleteDatabase( uri );
     }
     
     @Test
@@ -69,6 +85,8 @@ public class Tests
         assertEquals( "AC Milan", tuple.get( 0 ) );
         assertEquals( 9.0, tuple.get( 1 ) );
         LOGGER.info( "Added data for Zlatan Ibrahimovic, team: {}, salary: {} million per annum", tuple.toArray() );
+
+        Peer.deleteDatabase( uri );
     }
     
     @Test
@@ -106,11 +124,16 @@ public class Tests
         Helper.printValues( values );
         
         LOGGER.info( "List name and salary, ordered by salary as of last year (2011)" );
-        // Task: change database argument in order to get the facts for last year
-        results = Peer.q( query, conn.db().asOf( year2011 ) );
+        // Task: uncomment stuff below and change database argument in order to get the facts for last year
+        
+        /*
+        results = Peer.q( query, conn.db() );
         values = Helper.sort( Helper.list( results ), 1, "DESC" ); 
         assertEquals( "Cristiano Ronaldo", values.get( 0 ).get( 0 ) );
         Helper.printValues( values );
+        */
+        
+        Peer.deleteDatabase( uri );
     }
     
     @Test
@@ -135,6 +158,8 @@ public class Tests
         assertEquals( 21, results.size() );
         List<List<Object>> values = Helper.sort( Helper.list( results ), 1, "DESC" ); 
         Helper.printValues( values );
+
+        Peer.deleteDatabase( uri );
     }
     
     @Test
@@ -162,5 +187,7 @@ public class Tests
         List<List<Object>> values = Helper.sort( Helper.list( results ), 0, "ASC" );
         assertEquals( "Andrei Arshavin", values.get( 0 ).get( 0 ) );
         Helper.printValues( values );
+
+        Peer.deleteDatabase( uri );
     }    
 }

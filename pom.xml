@@ -7,14 +7,6 @@
     <packaging>jar</packaging>
     <name>Datomic :: Intro</name>
     <description>.</description>
-
-    <repositories>
-        <repository>
-            <id>finalist-public</id>
-            <url>https://www.intranet.finalist.com/nexus/content/groups/public/</url>
-        </repository>
-    </repositories>
-
     <properties>
         <clojure.version>1.4.0</clojure.version>
         <datomic-free.version>0.8.3551</datomic-free.version>
@@ -22,7 +14,6 @@
         <junit.version>4.7</junit.version>
         <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.clojure</groupId>
