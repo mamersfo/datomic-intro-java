@@ -26,7 +26,7 @@ public final class Helper
     private static final Logger LOGGER = LoggerFactory.getLogger( Helper.class );
     
     @SuppressWarnings("rawtypes")
-    static void printValues( Collection<List<Object>> collection )
+    static void print( Collection<List<Object>> collection )
     {
         LOGGER.info( "Found: {}", collection.size() );
 
@@ -67,35 +67,13 @@ public final class Helper
         return values;
     }
                 
-    static void printEntities( List<Entity> entities, String ... attrs  )
+    static void print( List<Entity> entities )
     {
         LOGGER.info( "Found: {}", entities.size() );
 
         for ( Entity entity : entities )
         {
-            StringBuilder sb = new StringBuilder( "Entity: " );
-            sb.append( entity.toString() );
-            
-            Collection<String> keys = null;
-            
-            if ( attrs.length > 0 )
-            {
-                keys = Arrays.asList( attrs );
-            }
-            else
-            {
-                keys = entity.keySet();
-            }
-
-            for ( Object key : keys )
-            {
-                sb.append( " " );
-                sb.append( key );
-                sb.append( " " );
-                sb.append(  entity.get( key ) );
-            }
-            
-            LOGGER.info( sb.toString() );                
+            LOGGER.info( entity.toString() );                
         }
     }
     

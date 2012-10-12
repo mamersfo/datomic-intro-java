@@ -35,7 +35,7 @@ public class Tests
         String query1 = Solutions.query1;
         assertTrue( query1 != null && query1.length() > 0 );
         Collection<List<Object>> results = Peer.q( query1, conn.db() );
-        Helper.printEntities( Helper.entities( results, conn.db() ) );
+        Helper.print( Helper.entities( results, conn.db() ) );
         assertEquals( 153, results.size() );
 
         Peer.deleteDatabase( uri );
@@ -56,10 +56,8 @@ public class Tests
         String query2 = Solutions.query2;
         assertTrue( query2 != null && query2.length() > 0 );
         Collection<List<Object>> results = Peer.q( query2, conn.db() );
-        Helper.printEntities( Helper.entities( results, conn.db() ) );
+        Helper.print( Helper.entities( results, conn.db() ) );
         assertEquals( 85, results.size() );
-        
-        Peer.deleteDatabase( uri );
     }
     
     @Test
@@ -121,7 +119,7 @@ public class Tests
         results = Peer.q( query, conn.db() );
         List<List<Object>> values = Helper.sort( Helper.list( results ), 1, "DESC" ); 
         assertEquals( "Samuel Eto'o", values.get( 0 ).get( 0 ) );
-        Helper.printValues( values );
+        Helper.print( values );
         
         LOGGER.info( "List name and salary, ordered by salary as of last year (2011)" );
         // Task: uncomment stuff below and change database argument in order to get the facts for last year
@@ -157,7 +155,7 @@ public class Tests
         Collection<List<Object>> results = Peer.q( query5, conn.db() );
         assertEquals( 21, results.size() );
         List<List<Object>> values = Helper.sort( Helper.list( results ), 1, "DESC" ); 
-        Helper.printValues( values );
+        Helper.print( values );
 
         Peer.deleteDatabase( uri );
     }
@@ -186,7 +184,7 @@ public class Tests
         assertEquals( 23, results.size() );
         List<List<Object>> values = Helper.sort( Helper.list( results ), 0, "ASC" );
         assertEquals( "Andrei Arshavin", values.get( 0 ).get( 0 ) );
-        Helper.printValues( values );
+        Helper.print( values );
 
         Peer.deleteDatabase( uri );
     }    
