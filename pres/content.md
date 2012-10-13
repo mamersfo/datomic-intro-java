@@ -31,7 +31,7 @@
 
 Rich Hickey, at [Strangeloop 2012](http://www.infoq.com/presentations/Simple-Made-Easy)
 
-.notes: Complected, braided together
+.notes: Complected, braided together. Design means: taking things apart.
 
 ---
 
@@ -50,6 +50,7 @@ Rich Hickey, at [Strangeloop 2012](http://www.infoq.com/presentations/Simple-Mad
 
 <center>Jacques Derrida (1930-2004)</center>
 
+.notes: Deconstruction also means taking things apart. The term is a contamination of 'destruction' and 'construction' and aims to take things apart but also to put things together to provide new meaning.
 
 ---
 
@@ -59,7 +60,7 @@ Rich Hickey, at [Strangeloop 2012](http://www.infoq.com/presentations/Simple-Mad
 
 ![EAVT](resources/eavt.png)
 
-* Datomic: facts, EAVT, Datoms
+* Datomic: facts, EAVT, Datoms - combined with a declarative, relational query language to store and retrieve those facts (no SQL by the way) 
 
 ---
 
@@ -158,6 +159,7 @@ Source: Rich Hickey, at [GOTO 2012](http://www.infoq.com/presentations/Datomic)
 
 ![Icons](resources/icons.png)
 
+* Datoms
 * Documents
 * Graphs
 * Columns
@@ -174,13 +176,29 @@ http://snltranscripts.jt.org/75/75ishimmer.phtml
 
 ---
 
+# Is Datomic the new Shimmer?
+
+Datomic may be your next:
+
+* Document Store
+* Graph Database
+* Column-Family Store
+* Key-Value Store
+* Relational Database
+
+(sort of)
+
+However...
+
+---
+
 # Datomic vs. Document Stores
 
-![Doc](resources/icon-doc.png)
+![Datom](resources/icon-datom.png) ![KV](resources/icon-doc.png)
 
-* Datoms are not JSON Documents
 * Documents are comparable to entities with attributes and values
-* Not the unit of storage
+* But: Datoms are not JSON Documents
+* Datoms, not documents, are the unit of storage
 
 ![MongoDB](resources/mongo.png)
 
@@ -188,12 +206,11 @@ http://snltranscripts.jt.org/75/75ishimmer.phtml
 
 # Datomic vs. Graph Databases
 
-![Graph](resources/icon-graph.png)
+![Datom](resources/icon-datom.png) ![KV](resources/icon-graph.png)
 
-* Neo4j has reified edges
-* Datomic has reified transactions
-* Example: [Back To The Future with Datomic](http://architects.dzone.com/articles/back-future-datomic)
-* [blueprints-datomic-graph](https://github.com/datablend/blueprints/tree/master/blueprints-datomic-graph) implements [Blueprints API](https://github.com/tinkerpop/blueprints/wiki)
+* Strong similaries, e.g. [Back To The Future with Datomic](http://architects.dzone.com/articles/back-future-datomic)
+* And [blueprints-datomic-graph](https://github.com/datablend/blueprints/tree/master/blueprints-datomic-graph) implements [Blueprints API](https://github.com/tinkerpop/blueprints/wiki)
+* But: Neo4j has reified edges, Datomic has reified transactions
 
 ![Neo4j](resources/neo4j.png)
 
@@ -201,11 +218,11 @@ http://snltranscripts.jt.org/75/75ishimmer.phtml
 
 # Datomic vs. Column-Family Stores
 
-![Column](resources/icon-column.png)
+![Datom](resources/icon-datom.png) ![KV](resources/icon-column.png)
 
 * Datomic AEVT indexing ~ a column store
-* Sparse, irregular data
-* Single and multi-valued attributes
+* Sparse, irregular data, single and multi-valued attributes
+* But: in Datomic, it's more straightforward to work with entities
 
 ![HBase](resources/hbase.png)
 
@@ -213,24 +230,25 @@ http://snltranscripts.jt.org/75/75ishimmer.phtml
 
 # Datomic vs. Key-Value Stores
 
-![KV](resources/icon-kv.png)
+![Datom](resources/icon-datom.png) ![KV](resources/icon-kv.png)
 
-* Key-Value Stores have no leverage
-* Datomic uses KV-stores for storage
-* Adds leverage with query and transactions and consistency
+* Datomic uses DynamoDB KV-store for storage
+* Datomic uses Memcached for caching
+* But: Datomic adds leverage with query, transactions and consistency
 
 ![Riak](resources/riak.png)
 
+.notes: SH on Google Groups: "(1) Datomic's distributed caching eliminates the common use case for running Redis alongside a persistent store, and (2) Redis does not seem to encourage conditional put, which is one straightforward way to map to Datomic's coordination requirements. Not carved in stone, though"
+
 ---
 
-# Datoms vs. Rectangles
+# Datoms vs. (New) Relational Databases
 
-![Rect](resources/icon-rect.png)
+![Datom](resources/icon-datom.png) ![KV](resources/icon-rect.png)
 
-* Datomic: No rectangles = no structural rigidity
-* NewSQL: transactional writes serialized using a single writer
-* VoltDB: single-threaded model, no overhead of write contention
-* VoltDB: focus on TP vs. analytics
+* Transactional serial writes, using just a single writer
+* But, Datomic = no rectangles = no structural rigidity
+* And: not only focus on TP, also on analytics
 
 ![VoltDB](resources/voltdb.jpg)
 
@@ -411,6 +429,26 @@ Find the expensive items
 	[:find ?item
 	 :where [?item :item/price ?price]
 	        [(< 50.0 ?price)]]
+	
+---
+
+# Aggregates
+
+The syntax is incorporated in the :find clause:
+
+    !clojure
+    [:find ?a (min ?b) (max ?b) ?c (sample 12 ?d) :where ...]
+
+The list expressions are aggregate expressions. 
+Query variables not in aggregate expressions will group the results and appear intact in the result. 
+
+The included aggregation functions are:
+
+* min, max
+* count, count-distinct
+* sum, avg, median
+* variance, stddev
+* rand
 	
 ---
 

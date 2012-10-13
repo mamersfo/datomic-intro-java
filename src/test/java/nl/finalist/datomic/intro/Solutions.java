@@ -8,7 +8,7 @@ public class Solutions
     public static final String query2 = "[:find ?p :in $ :where " + 
                                         "[?p :person/height]]";
     public static final String query3 = "[:find ?cn (count ?c) (avg ?h)  :in $ :where " +
-                                         "[?p :person/height ?h][?p :country ?c][?c :name ?cn]]";
+                                        "[?p :person/height ?h][?p :country ?c][?c :name ?cn]]";
     public static final String query4 = "[:find ?t ?s :in $ ?n :where " +
                                         "[?p :name ?n]" +
                                         "[?p :player/salary ?s]" +
