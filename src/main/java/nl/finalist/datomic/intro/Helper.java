@@ -25,12 +25,21 @@ public final class Helper
 {
     private static final Logger LOGGER = LoggerFactory.getLogger( Helper.class );
     
-    @SuppressWarnings("rawtypes")
+    static void print( List<Entity> entities )
+    {
+        LOGGER.info( "Found: {}", entities.size() );
+
+        for ( Entity entity : entities )
+        {
+            LOGGER.info( entity.toString() );                
+        }
+    }
+    
     static void print( Collection<List<Object>> collection )
     {
         LOGGER.info( "Found: {}", collection.size() );
 
-        for ( List list : collection )
+        for ( List<Object> list : collection )
         {
             LOGGER.info( list.toString() );
         }
@@ -55,28 +64,17 @@ public final class Helper
         return result;
     }
     
-    static List<Entity> sort( List<Entity> entities, String attr, String sortOrder )
+    static List<List<Object>> sort( List<List<Object>> values, int index )
     {
-        Collections.sort( entities, new EntityComparator( attr, sortOrder ) );
-        return entities;
+        return sort( values, index, "ASC" );
     }
-    
+
     static List<List<Object>> sort( List<List<Object>> values, int index, String sortOrder )
     {
         Collections.sort( values, new ValuesComparator( index, sortOrder ) );
         return values;
     }
                 
-    static void print( List<Entity> entities )
-    {
-        LOGGER.info( "Found: {}", entities.size() );
-
-        for ( Entity entity : entities )
-        {
-            LOGGER.info( entity.toString() );                
-        }
-    }
-    
     public static List<Map<String,String>> readCsv( String path )
     {
         List<Map<String,String>> result = new ArrayList<Map<String,String>>();

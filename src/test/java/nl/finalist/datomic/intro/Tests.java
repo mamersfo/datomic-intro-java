@@ -3,6 +3,8 @@ package nl.finalist.datomic.intro;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import static nl.finalist.datomic.intro.Helper.*;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +23,7 @@ public class Tests
     private final String uri = "datomic:mem://players";
         
     @Test
-    public void findAllEntities()
+    public void entitiesAndAttributes()
     {
         LOGGER.info( "Exercise 1: find all entities" );
 
@@ -31,20 +33,20 @@ public class Tests
         Main.parseDatomicFileAndRunTransaction( "data/schema-1.dtm", conn );
         Main.parseDatomicFileAndRunTransaction( "data/data-1.dtm", conn );
         
-        // Task: define query1
-        String query1 = Solutions.query1;
-        assertTrue( query1 != null && query1.length() > 0 );
-        Collection<List<Object>> results = Peer.q( query1, conn.db() );
-        Helper.print( Helper.entities( results, conn.db() ) );
+        // Task: define query
+        String query = Solutions.query1;
+        assertTrue( query != null && query.length() > 0 );
+        Collection<List<Object>> results = Peer.q( query, conn.db() );
+        print( entities( results, conn.db() ) );
         assertEquals( 153, results.size() );
 
         Peer.deleteDatabase( uri );
     }
     
     @Test
-    public void findAllPersons()
+    public void specificEntities()
     {
-        LOGGER.info( "Exercise 1: find all entities" );
+        LOGGER.info( "Exercise 2: find all persons" );
 
         LOGGER.info( "Creating and connecting to database at {}", uri );
         Connection conn = Main.createAndConnect( uri );
@@ -52,18 +54,45 @@ public class Tests
         Main.parseDatomicFileAndRunTransaction( "data/schema-1.dtm", conn );
         Main.parseDatomicFileAndRunTransaction( "data/data-1.dtm", conn );
         
-        // Task: define query2
-        String query2 = Solutions.query2;
-        assertTrue( query2 != null && query2.length() > 0 );
-        Collection<List<Object>> results = Peer.q( query2, conn.db() );
-        Helper.print( Helper.entities( results, conn.db() ) );
+        // Task: define query
+        String query = Solutions.query2;
+        assertTrue( query != null && query.length() > 0 );
+        Collection<List<Object>> results = Peer.q( query, conn.db() );
+        print( entities( results, conn.db() ) );
         assertEquals( 85, results.size() );
+
+        Peer.deleteDatabase( uri );
     }
-    
+
     @Test
-    public void findTeamAndSalaryForZlatan()
+    public void aggregateExpressions()
     {
-        LOGGER.info( "Exercise 3: find team name and salary for Zlatan" );
+        LOGGER.info( "Exercise 3: find for each country the number of players and their average height" );
+
+        LOGGER.info( "Creating and connecting to database at {}", uri );
+        Connection conn = Main.createAndConnect( uri );
+        LOGGER.info( "Adding schema and data with attrs: name, country, person/born, person/height, player/position" );
+        Main.parseDatomicFileAndRunTransaction( "data/schema-1.dtm", conn );
+        Main.parseDatomicFileAndRunTransaction( "data/data-1.dtm", conn );
+        
+        // Task: define query
+        String query = Solutions.query3;
+        assertTrue( query != null && query.length() > 0 );
+        Collection<List<Object>> results = Peer.q( query, conn.db() );
+        List<List<Object>> list = sort( list ( results ), 2, "DESC" );
+        print( list );
+        assertEquals( 19, list.size() );
+        assertEquals( "Sweden", list.get( 0 ).get( 0 ) );
+        assertEquals( 1, list.get( 0 ).get( 1 ) );
+        assertEquals( 195.0, list.get( 0 ).get( 2 ) );
+
+        Peer.deleteDatabase( uri );
+    }
+
+    @Test
+    public void performJoins()
+    {
+        LOGGER.info( "Exercise 4: find team name and salary for Zlatan" );
         
         LOGGER.info( "Creating and connecting to database at {}", uri );
         Connection conn = Main.createAndConnect( uri );
@@ -75,9 +104,9 @@ public class Tests
         Main.loadPlayerTeamAndSalary( "data/data-2-2011.csv", conn );
         
         // Task: define the query
-        String query3 = Solutions.query3;
-        assertTrue( query3 != null && query3.length() > 0 );
-        Collection<List<Object>> results = Peer.q( query3, conn.db(), "Zlatan Ibrahimovic" );
+        String query = Solutions.query4;
+        assertTrue( query != null && query.length() > 0 );
+        Collection<List<Object>> results = Peer.q( query, conn.db(), "Zlatan Ibrahimovic" );
         List<Object> tuple = results.iterator().next();        
         assertEquals( 2, tuple.size() );
         assertEquals( "AC Milan", tuple.get( 0 ) );
@@ -88,9 +117,9 @@ public class Tests
     }
     
     @Test
-    public void findTopEarnersForSubsequentYears()
+    public void timeTravel()
     {
-        LOGGER.info( "Exercise 4: find top earners for subsequent years" );
+        LOGGER.info( "Exercise 5: find top earners for subsequent years" );
         
         LOGGER.info( "Creating and connecting to database at {}", uri );
         Connection conn = Main.createAndConnect( uri );
@@ -103,9 +132,9 @@ public class Tests
         
         LOGGER.info( "Find instant when salaries were first recorded" );
         // Task: define the query
-        String query4 = Solutions.query4;
-        assertTrue( query4 != null && query4.length() > 0 );
-        Collection<List<Object>> results = Peer.q( query4, conn.db(), "Zlatan Ibrahimovic" );
+        String query = Solutions.query5;
+        assertTrue( query != null && query.length() > 0 );
+        Collection<List<Object>> results = Peer.q( query, conn.db(), "Zlatan Ibrahimovic" );
         Date year2011 = (Date)results.iterator().next().get( 0 );
         LOGGER.info( "Salary data added on {}", year2011 );
 
@@ -115,29 +144,31 @@ public class Tests
         Main.loadPlayerTeamAndSalary( "data/data-2-2012.csv", conn );
 
         LOGGER.info( "List name and salary, ordered by salary as of now (2012)" );
-        String query = "[:find ?name ?salary :in $ :where [?player :name ?name][?player :player/salary ?salary]]";
+        query = "[:find ?name ?salary :in $ :where [?player :name ?name][?player :player/salary ?salary]]";
         results = Peer.q( query, conn.db() );
-        List<List<Object>> values = Helper.sort( Helper.list( results ), 1, "DESC" ); 
+        List<List<Object>> values = sort( list( results ), 1, "DESC" ); 
         assertEquals( "Samuel Eto'o", values.get( 0 ).get( 0 ) );
-        Helper.print( values );
+        print( values );
         
         LOGGER.info( "List name and salary, ordered by salary as of last year (2011)" );
-        // Task: uncomment stuff below and change database argument in order to get the facts for last year
+        // Task: uncomment stuff below and change database argument 
+        // in order to get the facts for last year so that 
+        // Cristiano Ronaldo turns out to become the top earner
         
         /*
         results = Peer.q( query, conn.db() );
-        values = Helper.sort( Helper.list( results ), 1, "DESC" ); 
+        values = sort( list( results ), 1, "DESC" ); 
         assertEquals( "Cristiano Ronaldo", values.get( 0 ).get( 0 ) );
-        Helper.printValues( values );
+        printValues( values );
         */
         
         Peer.deleteDatabase( uri );
     }
     
     @Test
-    public void findTwitterersWithOverOneMillionFollowers()
+    public void predicateFunctions()
     {
-        LOGGER.info( "Exercise 5: find a Twitter user's screenName and followersCount " +
+        LOGGER.info( "Exercise 6: find a Twitter user's screenName and followersCount " +
                      "where followersCount is over one million followers" );
         
         LOGGER.info( "Creating and connecting to database at {}", uri );
@@ -150,20 +181,20 @@ public class Tests
         Main.parseDatomicFileAndRunTransaction( "data/data-3.dtm", conn );
         
         // Task: define the query
-        String query5 = Solutions.query5;
-        assertTrue( query5 != null && query5.length() > 0 );
-        Collection<List<Object>> results = Peer.q( query5, conn.db() );
+        String query = Solutions.query6;
+        assertTrue( query != null && query.length() > 0 );
+        Collection<List<Object>> results = Peer.q( query, conn.db() );
         assertEquals( 21, results.size() );
-        List<List<Object>> values = Helper.sort( Helper.list( results ), 1, "DESC" ); 
-        Helper.print( values );
+        List<List<Object>> values = sort( list( results ), 1 ); 
+        print( values );
 
         Peer.deleteDatabase( uri );
     }
     
     @Test
-    public void findNamesOfPlayersWhoAreFollowingRobinVanPersieOnTwitter()
+    public void multipleJoins()
     {        
-        LOGGER.info( "Exercise 6: find names of players who are following Robin van Persie on Twitter" );
+        LOGGER.info( "Exercise 7: find names of players who are following Robin van Persie on Twitter" );
         
         LOGGER.info( "Creating and connecting to database at {}", uri );
         Connection conn = Main.createAndConnect( uri );
@@ -178,13 +209,13 @@ public class Tests
         Main.loadPlayerTwitterScreenName( "data/data-4.csv", conn );
 
         // Task: define the query
-        String query6 = Solutions.query6;
-        assertTrue( query6 != null && query6.length() > 0 );
-        Collection<List<Object>> results = Peer.q( query6, conn.db(), "Robin van Persie" );
+        String query = Solutions.query7;
+        assertTrue( query != null && query.length() > 0 );
+        Collection<List<Object>> results = Peer.q( query, conn.db(), "Robin van Persie" );
         assertEquals( 23, results.size() );
-        List<List<Object>> values = Helper.sort( Helper.list( results ), 0, "ASC" );
+        List<List<Object>> values = sort( list( results ), 0 );
         assertEquals( "Andrei Arshavin", values.get( 0 ).get( 0 ) );
-        Helper.print( values );
+        print( values );
 
         Peer.deleteDatabase( uri );
     }    
