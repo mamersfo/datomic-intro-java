@@ -29,12 +29,13 @@ public class Tests
 
         LOGGER.info( "Creating and connecting to database at {}", uri );
         Connection conn = Main.createAndConnect( uri );
-        LOGGER.info( "Adding schema and data with attrs: name, country, person/born, person/height, player/position" );
+        LOGGER.info( "Adding schema and data with attrs: " +
+                "name, country, person/born, person/height, player/position" );
         Main.parseDatomicFileAndRunTransaction( "data/schema-1.dtm", conn );
         Main.parseDatomicFileAndRunTransaction( "data/data-1.dtm", conn );
         
         // Task: define query
-        String query = Solutions.query1;
+        String query = Solutions.solution1;
         assertTrue( query != null && query.length() > 0 );
         Collection<List<Object>> results = Peer.q( query, conn.db() );
         print( entities( results, conn.db() ) );
@@ -50,12 +51,13 @@ public class Tests
 
         LOGGER.info( "Creating and connecting to database at {}", uri );
         Connection conn = Main.createAndConnect( uri );
-        LOGGER.info( "Adding schema and data with attrs: name, country, person/born, person/height, player/position" );
+        LOGGER.info( "Adding schema and data with attrs: " +
+                "name, country, person/born, person/height, player/position" );
         Main.parseDatomicFileAndRunTransaction( "data/schema-1.dtm", conn );
         Main.parseDatomicFileAndRunTransaction( "data/data-1.dtm", conn );
         
         // Task: define query
-        String query = Solutions.query2;
+        String query = Solutions.solution2;
         assertTrue( query != null && query.length() > 0 );
         Collection<List<Object>> results = Peer.q( query, conn.db() );
         print( entities( results, conn.db() ) );
@@ -71,12 +73,13 @@ public class Tests
 
         LOGGER.info( "Creating and connecting to database at {}", uri );
         Connection conn = Main.createAndConnect( uri );
-        LOGGER.info( "Adding schema and data with attrs: name, country, person/born, person/height, player/position" );
+        LOGGER.info( "Adding schema and data with attrs: " +
+                "name, country, person/born, person/height, player/position" );
         Main.parseDatomicFileAndRunTransaction( "data/schema-1.dtm", conn );
         Main.parseDatomicFileAndRunTransaction( "data/data-1.dtm", conn );
         
         // Task: define query
-        String query = Solutions.query3;
+        String query = Solutions.solution3;
         assertTrue( query != null && query.length() > 0 );
         Collection<List<Object>> results = Peer.q( query, conn.db() );
         List<List<Object>> list = sort( list ( results ), 2, "DESC" );
@@ -96,7 +99,8 @@ public class Tests
         
         LOGGER.info( "Creating and connecting to database at {}", uri );
         Connection conn = Main.createAndConnect( uri );
-        LOGGER.info( "Adding schema and data with attrs: name, country, person/born, person/height, player/position" );
+        LOGGER.info( "Adding schema and data with attrs: " +
+                "name, country, person/born, person/height, player/position" );
         Main.parseDatomicFileAndRunTransaction( "data/schema-1.dtm", conn );
         Main.parseDatomicFileAndRunTransaction( "data/data-1.dtm", conn );
         LOGGER.info( "Adding attributes to schema: player/team, player/salary + data" );
@@ -104,14 +108,15 @@ public class Tests
         Main.loadPlayerTeamAndSalary( "data/data-2-2011.csv", conn );
         
         // Task: define the query
-        String query = Solutions.query4;
+        String query = Solutions.solution4;
         assertTrue( query != null && query.length() > 0 );
         Collection<List<Object>> results = Peer.q( query, conn.db(), "Zlatan Ibrahimovic" );
         List<Object> tuple = results.iterator().next();        
         assertEquals( 2, tuple.size() );
         assertEquals( "AC Milan", tuple.get( 0 ) );
         assertEquals( 9.0, tuple.get( 1 ) );
-        LOGGER.info( "Added data for Zlatan Ibrahimovic, team: {}, salary: {} million per annum", tuple.toArray() );
+        LOGGER.info( "Added data for Zlatan Ibrahimovic, team: {}, salary: {} million per annum", 
+                tuple.toArray() );
 
         Peer.deleteDatabase( uri );
     }
@@ -123,7 +128,8 @@ public class Tests
         
         LOGGER.info( "Creating and connecting to database at {}", uri );
         Connection conn = Main.createAndConnect( uri );
-        LOGGER.info( "Adding schema and data with attrs: name, country, person/born, person/height, player/position" );
+        LOGGER.info( "Adding schema and data with attrs: " +
+                "name, country, person/born, person/height, player/position" );
         Main.parseDatomicFileAndRunTransaction( "data/schema-1.dtm", conn );
         Main.parseDatomicFileAndRunTransaction( "data/data-1.dtm", conn );
         LOGGER.info( "Adding attributes to schema: player/team, player/salary + data" );
@@ -132,7 +138,7 @@ public class Tests
         
         LOGGER.info( "Find instant when salaries were first recorded" );
         // Task: define the query
-        String query = Solutions.query5;
+        String query = Solutions.solution5;
         assertTrue( query != null && query.length() > 0 );
         Collection<List<Object>> results = Peer.q( query, conn.db(), "Zlatan Ibrahimovic" );
         Date year2011 = (Date)results.iterator().next().get( 0 );
@@ -173,7 +179,8 @@ public class Tests
         
         LOGGER.info( "Creating and connecting to database at {}", uri );
         Connection conn = Main.createAndConnect( uri );
-        LOGGER.info( "Adding schema and data with attrs: name, country, person/born, person/height, player/position" );
+        LOGGER.info( "Adding schema and data with attrs: " +
+                "name, country, person/born, person/height, player/position" );
         Main.parseDatomicFileAndRunTransaction( "data/schema-1.dtm", conn );
         Main.parseDatomicFileAndRunTransaction( "data/data-1.dtm", conn );
         LOGGER.info( "Adding Twitter user attributes to schema + data" );
@@ -181,7 +188,7 @@ public class Tests
         Main.parseDatomicFileAndRunTransaction( "data/data-3.dtm", conn );
         
         // Task: define the query
-        String query = Solutions.query6;
+        String query = Solutions.solution6;
         assertTrue( query != null && query.length() > 0 );
         Collection<List<Object>> results = Peer.q( query, conn.db() );
         assertEquals( 21, results.size() );
@@ -198,7 +205,8 @@ public class Tests
         
         LOGGER.info( "Creating and connecting to database at {}", uri );
         Connection conn = Main.createAndConnect( uri );
-        LOGGER.info( "Adding schema and data with attrs: name, country, person/born, person/height, player/position" );
+        LOGGER.info( "Adding schema and data with attrs: " +
+                "name, country, person/born, person/height, player/position" );
         Main.parseDatomicFileAndRunTransaction( "data/schema-1.dtm", conn );
         Main.parseDatomicFileAndRunTransaction( "data/data-1.dtm", conn );
         LOGGER.info( "Adding Twitter user attributes to schema + data" );
@@ -209,7 +217,7 @@ public class Tests
         Main.loadPlayerTwitterScreenName( "data/data-4.csv", conn );
 
         // Task: define the query
-        String query = Solutions.query7;
+        String query = Solutions.solution7;
         assertTrue( query != null && query.length() > 0 );
         Collection<List<Object>> results = Peer.q( query, conn.db(), "Robin van Persie" );
         assertEquals( 23, results.size() );
@@ -219,4 +227,27 @@ public class Tests
 
         Peer.deleteDatabase( uri );
     }    
+    
+    @Test
+    public void usingRules()
+    {
+        LOGGER.info( "Exercise 8: find names of goalkeepers or defenders, using rules" );
+
+        LOGGER.info( "Creating and connecting to database at {}", uri );
+        Connection conn = Main.createAndConnect( uri );
+        LOGGER.info( "Adding schema and data with attrs: " +
+                "name, country, person/born, person/height, player/position" );
+        Main.parseDatomicFileAndRunTransaction( "data/schema-1.dtm", conn );
+        Main.parseDatomicFileAndRunTransaction( "data/data-1.dtm", conn );
+        
+        // Task: define query
+        String query = "[:find ?n :in $ % :where [?e :name ?n](goalkeepers_or_defenders ?e)]";
+        String rules = Solutions.solution8;
+        Collection<List<Object>> results = Peer.q( query, conn.db(), rules );
+        print( sort( list( results ), 0 ) );
+        assertEquals( 24, results.size() );
+
+        Peer.deleteDatabase( uri );
+    }
+
 }
