@@ -1,4 +1,4 @@
-# NoSQL Techsessie **Datomic**
+# Devnology **Datomic**
 
 ---
 
@@ -13,9 +13,9 @@
 
 ---
 
-![Datamic](resources/logo.png)
+![Datomic](resources/logo.png)
 
-![Datamic](resources/pebbles.jpg)
+![Datomic](resources/pebbles.jpg)
 
 ---
 
@@ -29,28 +29,69 @@
 
 ![Simple-Made-Easy](resources/simple-made-easy.png)
 
-Rich Hickey, at [Strangeloop 2012](http://www.infoq.com/presentations/Simple-Made-Easy)
+Rich Hickey, at [Strangeloop 2011](http://www.infoq.com/presentations/Simple-Made-Easy)
 
 .notes: Complected, braided together. Design means: taking things apart.
 
 ---
 
-# Deconstructing the Database
+# Complected
+
+## com·plect·ed
+
+**adjective** \kəm-ˈplek-təd\
+
+## Usage Discussion of COMPLECTED
+
+Not an error, nor a dialectal term, nor nonstandard—all of which it has been labeled—complected still manages to raise hackles. It is an Americanism, apparently nonexistent in British English. Its currency in American English is attested as early as 1806 (by Meriwether Lewis) and it appears in the works of such notable American writers as Mark Twain, O. Henry, James Whitcomb Riley, and William Faulkner. Complexioned, recommended by handbooks, has less use than complected. Literary use, old and new, slightly favors complected.
+
+## Origin of COMPLECTED
+
+irregular from complexion
+
+First Known Use: 1785
 
 ---
 
 # Deconstruction
 
+![](resources/100px.png)
+![Derrida](resources/220px-Derrida-by-Pablo-Secca.jpg)
+
+<center>Jacques Derrida (1930-2004)</center>
+
+.notes: to overturn all binary oppositions (of metaphysics)
+
+.notes: one of the two terms is dominant
+
+.notes: deconstruction is to overturn the hierarchy, not to synthesize, but to mark their difference
+
+.notes: Deconstruction also means taking things apart. The term is a contamination of 'destruction' and 'construction' and aims to take things apart but also to put things together to provide new meaning.
+
+---
+
+# Deconstruction
+
+(not in metaphysics, but in IT)
+
+relations | objects => facts
+
+place | time => values
+
+client | server => peers
+
+reads | writes => reaction
+
+
+
+---
+
+# Deconstructing the Database
+
 * Information Model
 * State Model
 * Coordination Model
 * Distribution Model
-
-![Derrida](resources/derrida.gif)
-
-<center>Jacques Derrida (1930-2004)</center>
-
-.notes: Deconstruction also means taking things apart. The term is a contamination of 'destruction' and 'construction' and aims to take things apart but also to put things together to provide new meaning.
 
 ---
 
@@ -98,7 +139,17 @@ Rich Hickey, at [Strangeloop 2012](http://www.infoq.com/presentations/Simple-Mad
 
 # Deconstructing the Database
 
-![Deconstructed](resources/deconstructed.png)
+![Before](resources/before-deconstruction.png)
+
+Source: Rich Hickey, at [GOTO 2012](http://www.infoq.com/presentations/Datomic)
+
+.notes: Basis problem with client-server, "over there"
+
+---
+
+# Deconstructing the Database
+
+![After](resources/after-deconstruction.png)
 
 Source: Rich Hickey, at [GOTO 2012](http://www.infoq.com/presentations/Datomic)
 
@@ -112,36 +163,31 @@ Source: Rich Hickey, at [GOTO 2012](http://www.infoq.com/presentations/Datomic)
 
 # Datomic Architecture
 
-![Architecture](resources/architecture.png)
+![Architecture](resources/datomic-architecture.png)
 
 ---
 
 # Storage Services
 
-![AmazonDB](resources/aws.png)
-
-![Infinispan](resources/infinispan.png)
-
-![PostgreSQL](resources/postgresql.jpg) 
-
-![H2](resources/h2.png)
-
-![Riak](resources/riak.png)
+![Services](resources/storage-services.png)
 
 ---
 
 # Indexing
 
-* EAVT ~ Relational
-* AEVT ~ Column
-* VEAT ~ Reverse Indexing
-* AVET ~ Range Queries
+![Indexing](resources/indexing1.png)
 
 ---
 
 # Indexing
 
-![Index Storage](resources/index-storage.png)
+![Indexing](resources/indexing2.png)
+
+---
+
+# Indexing
+
+![Index Storage](resources/indexing0.png)
 
 ---
 
@@ -157,14 +203,7 @@ Source: Rich Hickey, at [GOTO 2012](http://www.infoq.com/presentations/Datomic)
 
 # Datomic vs. No/New/SQL
 
-![Icons](resources/icons.png)
-
-* Datoms
-* Documents
-* Graphs
-* Columns
-* Key-Value Pairs
-* Rectangles
+![Icons](resources/icons1.png)
 
 ---
 
@@ -260,7 +299,9 @@ However...
 
 ![Agility](resources/agility.png)
 
-Source: Stuart Halloway, from "Day of Datomic" training
+
+
+Adapted from: Stuart Halloway, from "Day of Datomic" training
 
 ---
 

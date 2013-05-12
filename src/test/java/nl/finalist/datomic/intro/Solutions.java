@@ -3,8 +3,7 @@ package nl.finalist.datomic.intro;
 
 public class Solutions
 {
-    public static final String solution1 = "[:find ?p :in $ :where " +
-                                           "[?p :name]]";
+    public static final String solution1 = "[:find ?p :in $ :where [?p :name]]";
     public static final String solution2 = "[:find ?p :in $ :where " + 
                                            "[?p :person/height]]";
     public static final String solution3 = "[:find ?cn (count ?c) (avg ?h)  :in $ :where " +

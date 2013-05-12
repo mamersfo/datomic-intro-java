@@ -9,7 +9,7 @@
     <description>.</description>
     <properties>
         <clojure.version>1.4.0</clojure.version>
-        <datomic-free.version>0.8.3551</datomic-free.version>
+        <datomic-free.version>0.8.3889</datomic-free.version>
         <slf4j-log4j12.version>1.6.6</slf4j-log4j12.version>
         <junit.version>4.7</junit.version>
         <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
