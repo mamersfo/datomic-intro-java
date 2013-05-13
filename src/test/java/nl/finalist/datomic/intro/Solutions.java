@@ -13,10 +13,9 @@ public class Solutions
                                            "[?p :player/salary ?s]" +
                                            "[?p :player/team ?team]" + 
                                            "[?team :name ?t]]";
-    public static final String solution5 = "[:find ?instant :in $ ?n :where " + 
-                                           "[?p :player/salary _ ?tx]" +
-                                           "[?tx :db/txInstant ?instant]]";    
-    //  database argument should be: conn.db().asOf( year2011 )
+    
+    // solution 5: database argument should be: conn.db().asOf( year2011 )
+    
     public static final String solution6 = "[:find ?s ?c :in $ :where " +
                                            "[?t :twitter/screenName ?s]" +
                                            "[?t :twitter/followersCount ?c]" +

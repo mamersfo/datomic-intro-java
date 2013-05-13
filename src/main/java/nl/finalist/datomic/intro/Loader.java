@@ -41,20 +41,20 @@ public class Loader
      
         LOGGER.info( "Adding schema and data with attrs: " +
             "name, country, person/born, person/height, player/position" );
-        Main.parseDatomicFileAndRunTransaction( "data/schema-1.dtm", conn );
-        Main.parseDatomicFileAndRunTransaction( "data/data-1.dtm", conn );
+        Main.loadDatomicFile( "data/schema-1.dtm", conn );
+        Main.loadDatomicFile( "data/data-1.dtm", conn );
 
         LOGGER.info( "Adding attributes to schema: player/team, player/salary + data" );
-        Main.parseDatomicFileAndRunTransaction( "data/schema-2.dtm", conn );
+        Main.loadDatomicFile( "data/schema-2.dtm", conn );
         Main.loadPlayerTeamAndSalary( "data/data-2-2011.csv", conn );
         Main.loadPlayerTeamAndSalary( "data/data-2-2012.csv", conn );
         
         LOGGER.info( "Adding Twitter user attributes to schema + data" );
-        Main.parseDatomicFileAndRunTransaction( "data/schema-3.dtm", conn );
-        Main.parseDatomicFileAndRunTransaction( "data/data-3.dtm", conn );
+        Main.loadDatomicFile( "data/schema-3.dtm", conn );
+        Main.loadDatomicFile( "data/data-3.dtm", conn );
 
         LOGGER.info( "Adding attributes to schema: player/twitter.screenName + data" );
-        Main.parseDatomicFileAndRunTransaction( "data/schema-4.dtm", conn );
+        Main.loadDatomicFile( "data/schema-4.dtm", conn );
         Main.loadPlayerTwitterScreenName( "data/data-4.csv", conn );
     }
 }

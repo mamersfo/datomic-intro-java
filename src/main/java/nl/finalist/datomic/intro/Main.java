@@ -6,6 +6,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import datomic.Connection;
 import datomic.Database;
 import datomic.Peer;
@@ -13,14 +16,17 @@ import datomic.Util;
 
 public class Main
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger( Main.class );
+ 
     public static Connection createAndConnect( String uri )
     {
+        LOGGER.info( "Creating and connecting to database at {}", uri );
         Peer.createDatabase( uri );
         return Peer.connect( uri );
     }
     
     @SuppressWarnings("rawtypes")
-    public static Object parseDatomicFileAndRunTransaction( String path, Connection conn )
+    public static Object loadDatomicFile( String path, Connection conn )
     {
         try
         {
